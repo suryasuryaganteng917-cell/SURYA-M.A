@@ -6,7 +6,7 @@ cls
 color 0a
 echo.
 echo =================================================================
-echo                 SIMULASI BOOTING SISTEM...
+echo                         BOOTING SISTEM...
 echo =================================================================
 echo.
 
@@ -127,7 +127,7 @@ echo            [ OPSI 5: INFORMASI TARGET ]
 echo ----------------------------------------------------------
 echo PROSES PENGUMPULAN DATA... [BERHASIL]
 echo.
-echo --- SIMULASI DATA TARGET ---
+echo --- DATA TARGET ---
 echo NIK (Acak)         : 320101XXXXXXXXX123
 echo Nama               : 404 NOT FOUND https://surya.ma.com
 echo Alamat             : Jl. Mawar Indah No. 45, Bandung
@@ -141,5 +141,6 @@ echo ----------------------------------------------------------
 echo.
 pause
 GOTO MENU
+
 
 :END
