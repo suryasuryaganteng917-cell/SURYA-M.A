@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI SURYA M.A</title>
+  <style>
+    :root {
+      --neon: #00e5ff;
+      --bg: #02040a;
+      --card: #06121f;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+    body {
+      margin: 0; background: radial-gradient(circle at top, #03162a, var(--bg));
+      color: #e6f7ff; height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .chat {
+      width: 100%; max-width: 420px; height: 90vh; background: var(--card);
+      border-radius: 18px; box-shadow: 0 0 25px rgba(0,229,255,.25);
+      display: flex; flex-direction: column; overflow: hidden;
+      border: 1px solid rgba(0,229,255,.25);
+    }
+    .header {
+      padding: 14px; text-align: center; font-weight: 700; letter-spacing: 1px;
+      color: var(--neon); text-shadow: 0 0 8px var(--neon);
+      border-bottom: 1px solid rgba(0,229,255,.25);
+    }
+    .messages {
+      flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
+    }
+    .msg {
+      max-width: 80%; padding: 10px 12px; border-radius: 12px; line-height: 1.4;
+      box-shadow: 0 0 12px rgba(0,229,255,.15);
+    }
+    .user {
+      align-self: flex-end; background: linear-gradient(135deg, #007c91, var(--neon)); color: #001;
+    }
+    .ai {
+      align-self: flex-start; background: #031c2e; border: 1px solid rgba(0,229,255,.25);
+    }
+    .input {
+      display: flex; gap: 8px; padding: 10px; border-top: 1px solid rgba(0,229,255,.25);
+    }
+    .input input {
+      flex: 1; padding: 12px; border-radius: 10px; border: 1px solid rgba(0,229,255,.4);
+      background: #020b14; color: #e6f7ff; outline: none;
+    }
+    .input button {
+      padding: 0 16px; border-radius: 10px; border: none; cursor: pointer;
+      background: var(--neon); color: #001; font-weight: 700;
+      box-shadow: 0 0 12px rgba(0,229,255,.6);
+    }
+    .glow {
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      from { box-shadow: 0 0 8px rgba(0,229,255,.4); }
+      to   { box-shadow: 0 0 18px rgba(0,229,255,.9); }
+    }
+  </style>
+</head>
+<body>
+  <div class="chat">
+    <div class="header">AI SURYA M.A OFC</div>
+    <div id="messages" class="messages"></div>
+    <div class="input">
+      <input id="text" placeholder="Ketik pesan..." />
+      <button class="glow" onclick="send()">Kirim</button>
+    </div>
+  </div>  <script>
+    const messages = document.getElementById('messages');
+    const input = document.getElementById('text');
+
+    function addMsg(text, cls) {
+      const d = document.createElement('div');
+      d.className = 'msg ' + cls;
+      d.textContent = text;
+      messages.appendChild(d);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    async function send() {
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      addMsg(text, 'user');
+
+      addMsg('Mengetik...', 'ai');
+
+      try {
+        // ================================
+        // GOOGLE GEMINI API (BUTUH API KEY)
+        // ================================
+        const API_KEY = 'AIzaSyBdy4miFM25vFBa2YaVr1DUfwSgqLz13QU';
+        const url = https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY};
+
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text }] }]
+          })
+        });
+
+        const data = await res.json();
+        messages.lastChild.remove();
+
+        const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'Tidak ada balasan.';
+        addMsg(reply, 'ai');
+      } catch (e) {
+        messages.lastChild.remove();
+        addMsg('Gagal terhubung ke Google AI.', 'ai');
+      }
+    }
+
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+  </script></body>
+</html>
